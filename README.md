@@ -4,6 +4,8 @@
 npm install obj-append-strings --save
 ``````
 
+This is a tiny function for bulk appending strings to other strings through the use of objects.
+
 So basically instead of doing this:
 
 ````js
@@ -27,7 +29,7 @@ var variable = functionName({
 You can avoid the ugly repetition by doing this instead:
 
 ````js
-var appendStrings = require('obj-append-strings')
+var appendStrings = require('obj-append-strings');
 
 function functionName(settings){
 
@@ -75,8 +77,7 @@ var variable = functionName({
 If you can 100% guarantee that the object having the strings appended to it is an already defined object (not "undefined") then you can leave off the `settings = ` bit:
 
 `````````js
-  //leave off the "settings =" bit if you can 100% guarantee
-  //that "settings" is already defined
+  //leave off the "settings =" bit if you can 100% guarantee that "settings" is already defined
   appendStrings(settings, {
     setting_1: 'c ',
     setting_2: 'd ',
@@ -88,7 +89,7 @@ If you can 100% guarantee that the object having the strings appended to it is a
 
 I primarily built this function for use in [Pug](https://pugjs.org/api/getting-started.html) templates as a way of assigning permanent classes to sub modules.
 
-To use the function in pug you will need to parse the `require` function from node.js into the Pug locals.
+To use the function in pug you will need to parse the `require` function from node.js into the Pug `locals` object.
 
 If you're using Gulp, then this is a simplified version of the setup you would use to compile Pug templates that have support for the `require` node.js function:
 
@@ -96,7 +97,7 @@ If you're using Gulp, then this is a simplified version of the setup you would u
 gulp.src('**/*.pug')
   .pipe(plugins.pug({
     locals: {
-      //this bit gives access to "require" from inside pug templates
+      //this bit gives access to the "require" function from inside pug templates
       require: require,
     }
   }))
