@@ -3,7 +3,7 @@ var appendStrings = require('./index.js');
 
 function testFunction(settings){
 
-  appendStrings(settings, {
+  settings = appendStrings(settings, {
     setting_1: ' c',
     setting_2: ' d',
   });
