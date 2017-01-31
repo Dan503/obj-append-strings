@@ -1,0 +1,26 @@
+{
+  "name": "obj-append-strings",
+  "version": "1.0.0",
+  "description": "A simple js function for appending strings to the end of values in an object",
+  "main": "index.js",
+  "scripts": {
+    "test": "node ./test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Dan503/obj-append-strings.git"
+  },
+  "keywords": [
+    "js",
+    "object",
+    "append",
+    "string",
+    "pug"
+  ],
+  "author": "Daniel Tonon",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Dan503/obj-append-strings/issues"
+  },
+  "homepage": "https://github.com/Dan503/obj-append-strings#readme"
+}
