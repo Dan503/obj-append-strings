@@ -15,7 +15,8 @@
     "object",
     "append",
     "string",
-    "pug"
+    "pug",
+    "gulp"
   ],
   "author": "Daniel Tonon",
   "license": "MIT",
