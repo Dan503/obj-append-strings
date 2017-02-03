@@ -93,7 +93,7 @@ To use the function in pug you will need to parse the `require` function from no
 
 If you're using Gulp, then this is a simplified version of the setup you would use to compile Pug templates that have support for the `require` node.js function:
 
-```````````
+```````````js
 gulp.src('**/*.pug')
   .pipe(plugins.pug({
     locals: {
@@ -103,24 +103,24 @@ gulp.src('**/*.pug')
   }))
 ```````````
 
-Once you have the `require` function available inside your pug templates, you can use the function in pug mixins like this to assign permanent classes to sub modules:
+Once you have the `require` function available inside your pug templates, you can use the function in pug mixins like this to assign permanent classes to sub modules. The below example uses [default-to](https://www.npmjs.com/package/default-to) to make the syntax simpler.
 
-```````````
+```````````pug
 include path/to/a/subModule
 
 - var appendStrings = require('obj-append-strings');
 
 mixin example(spec)
   -
-    Object.assign(spec, {
+    defaultTo(spec, {
       classes : '',
-      subModule : Object.assign(this.subModule, {
+      subModule : {
         classes : 'overridable-classes'
-      })
+      }
     });
 
     spec.subModule = appendStrings(spec.subModule, {
-      classes: ' permenant-classes'
+      classes: ' permanent-classes'
     })
 
   .example(class=spec.classes)&attributes(attributes)
