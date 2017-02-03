@@ -12,18 +12,22 @@ So basically instead of doing this:
 function functionName(settings){
 
   //This is ugly
+  settings = settings || {};
   settings.setting_1 = settings.setting_1 + ' c';
-  settings.setting_2 = settings.setting_2 + ' d';
+  settings.setting_2 = settings.setting_2 || {};
+  settings.setting_2.alpha = settings.setting_2.alpha  + ' d';
 
   return settings;
 }
 
 var variable = functionName({
-  setting_1: ' a',
-  setting_2: ' b',
+  setting_1: 'a',
+  setting_2: {
+    alpha: 'b'
+  },
 });
 
-//variable = { setting_1 : 'a c', setting_2 : 'b d' }
+//variable = { setting_1 : 'a c', setting_2 : { alpha: 'b d' } }
 ````
 
 You can avoid the ugly repetition by doing this instead:
@@ -36,7 +40,9 @@ function functionName(settings){
   //This is pretty
   settings = appendStrings(settings, {
     setting_1: ' c',
-    setting_2: ' d',
+    setting_2: {
+      alpha: ' d'
+    },
   });
 
   return settings;
@@ -44,10 +50,12 @@ function functionName(settings){
 
 var variable = functionName({
   setting_1: 'a',
-  setting_2: 'b',
+  setting_2: {
+    alpha: 'b'
+  },
 });
 
-//variable = { setting_1 : 'a c', setting_2 : 'b d' }
+//variable = { setting_1 : 'a c', setting_2 : { alpha: 'b d' } }
 ````
 
 Or if you want to prep-end the strings instead:
@@ -60,7 +68,9 @@ function functionName(settings){
   //This adds the strings before the original value
   settings = appendStrings(settings, {
     setting_1: 'c ',
-    setting_2: 'd ',
+    setting_2: {
+      alpha: 'd ',
+    },
   }, 'before');
 
   return settings;
@@ -68,10 +78,13 @@ function functionName(settings){
 
 var variable = functionName({
   setting_1: 'a',
-  setting_2: 'b',
+  setting_2: {
+    alpha: 'b'
+  },
 });
 
-//variable = { setting_1 : 'c a', setting_2 : 'd b' }
+
+//variable = { setting_1 : 'c a', setting_2 : alpha: { 'd b' } }
 ````
 
 If you can 100% guarantee that the object having the strings appended to it is an already defined object (not "undefined") then you can leave off the `settings = ` bit:
@@ -80,7 +93,9 @@ If you can 100% guarantee that the object having the strings appended to it is a
   //leave off the "settings =" bit if you can 100% guarantee that "settings" is already defined
   appendStrings(settings, {
     setting_1: 'c ',
-    setting_2: 'd ',
+    setting_2: {
+      alpha: 'd ',
+    },
   }, 'before');
 
 `````````
@@ -106,24 +121,53 @@ gulp.src('**/*.pug')
 Once you have the `require` function available inside your pug templates, you can use the function in pug mixins like this to assign permanent classes to sub modules. The below example uses [default-to](https://www.npmjs.com/package/default-to) to make the syntax simpler.
 
 ```````````pug
-include path/to/a/subModule
+include path/to/subModule1
+include path/to/subModule2
 
+- var defaultTo = require('default-to').default;
 - var appendStrings = require('obj-append-strings');
 
 mixin example(spec)
   -
+    //Any classes in here will be lost if the user defines their own classes
     defaultTo(spec, {
       classes : '',
-      subModule : {
+      subModule1 : {
+        classes : 'overridable-classes'
+      },
+      subModule2 : {
         classes : 'overridable-classes'
       }
     });
 
-    spec.subModule = appendStrings(spec.subModule, {
-      classes: ' permanent-classes'
+    //classes that are placed here are impossible for the user to override remotely
+    spec = appendStrings(spec, {
+      subModule1: {
+        classes: ' permanent-classes'
+      },
+      subModule2: {
+        classes: ' permanent-classes'
+      }
     })
 
   .example(class=spec.classes)&attributes(attributes)
-    +subModule(spec.subModule)
+    +subModule1(spec.subModule1)
+    +subModule2(spec.subModule2)
 
 ```````````
+
+This is how that would look when calling the Pug mixin
+
+`````````pug
+include path/to/example
+
++example({
+  classes: 'module-classes',
+  subModule1: {
+    classes: 'subModule1-overide-classes',
+  },
+  subModule2: {
+    classes: 'subModule2-overide-classes',
+  }
+})
+`````````
