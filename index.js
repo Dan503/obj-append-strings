@@ -1,10 +1,24 @@
+function appendStrings(appendee, appender, position, key){
+	if (typeof appendee[key] === 'object' && !Array.isArray(appendee[key])){
+		for (var subKey in appendee[key]){
+			appendStrings(appendee[key], appender[key], position, subKey);
+		}
+	} else {
+		appendee[key] = typeof appendee[key] !== 'undefined' ? appendee[key] : '';
+		var appendResult = appendee[key] + '' + appender[key];
+		var prependResult = appender[key] + '' + appendee[key];
+		appendee[key] = position === 'after' ? appendResult : prependResult;
+	}
+
+	return appendee;
+}
+
 module.exports = function(appendee, appender, position){
 	position = typeof position !== 'undefined' ? position : 'after';
 	appendee = typeof appendee !== 'undefined' ? appendee : {};
 
 	for (var key in appender){
-		appendee[key] = typeof appendee[key] !== 'undefined' ? appendee[key] : '';
-		appendee[key] = position === 'after' ? appendee[key] + '' + appender[key] : appender[key] + '' + appendee[key];
+		appendStrings(appendee, appender, position, key);
 	}
 
 	return appendee;

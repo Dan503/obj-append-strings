@@ -5,7 +5,9 @@ function testFunction(settings){
 
   settings = appendStrings(settings, {
     setting_1: ' c',
-    setting_2: ' d',
+    setting_2: {
+    	alpha: ' d',
+    },
   });
 
   return settings;
@@ -13,7 +15,9 @@ function testFunction(settings){
 
 var test = testFunction({
   setting_1: 'a',
-  setting_2: 'b',
+  setting_2: {
+    alpha: 'b'
+  },
 });
 
 console.log(test);
