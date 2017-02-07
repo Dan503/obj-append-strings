@@ -1,6 +1,6 @@
 {
   "name": "obj-append-strings",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "A simple js function for appending strings to the end of values in an object",
   "main": "index.js",
   "scripts": {

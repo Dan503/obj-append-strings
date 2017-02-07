@@ -96,9 +96,67 @@ If you can 100% guarantee that the object having the strings appended to it is a
     setting_2: {
       alpha: 'd ',
     },
-  }, 'before');
+  });
 
 `````````
+
+If there are values that are undefined, it will just use the values that are available
+
+````js
+var appendStrings = require('obj-append-strings');
+
+function functionName(settings){
+
+  //This adds the strings before the original value
+  settings = appendStrings(settings, {
+    setting_1: 'c ',
+    setting_2: {
+      alpha: 'd ',
+    },
+  });
+
+  return settings;
+}
+
+var variable_1 = functionName({
+  setting_2: {
+    alpha: 'b'
+  },
+});
+
+
+var variable_2 = functionName({
+  setting_1: 'a',
+});
+
+
+//variable_1 = { setting_1 : 'c ', setting_2 : alpha: { 'd b' } }
+//variable_2 = { setting_1 : 'a c', setting_2 : alpha: { 'd ' } }
+````
+
+It also works the other way around (yeah the code in this example is a bit silly)
+
+````js
+var appendStrings = require('obj-append-strings');
+
+function functionName(settings){
+
+  //This adds the strings before the original value
+  settings = appendStrings(settings, {
+  });
+
+  return settings;
+}
+
+var variable = functionName({
+  setting_1: 'a',
+  setting_2: {
+    alpha: 'b'
+  },
+});
+
+//variable = { setting_1 : 'a', setting_2 : alpha: { 'b' } }
+````
 
 ## Pug usage
 
